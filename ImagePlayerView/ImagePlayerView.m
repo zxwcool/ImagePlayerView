@@ -97,8 +97,8 @@
     [self addConstraints:self.pageControlConstraints];
 
     self.edgeInsets = UIEdgeInsetsZero;
-    
-    [self reloadData];
+    //如果是使用initWithFrame方法初始化，此时调用reloadData没有作用，因为属性变量还未赋值，应等待kvo监听调用reloadData
+    // [self reloadData];
 }
 
 - (void)dealloc
@@ -186,6 +186,8 @@
     
     self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width * itemCount, self.scrollView.frame.size.height);
     self.scrollView.contentInset = UIEdgeInsetsZero;
+    //重加载后，自动开始滚屏，避免reloadData之后，停止自动滚屏
+    [self setAutoScroll:YES];
 }
 
 #pragma mark - actions
